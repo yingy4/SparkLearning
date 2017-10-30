@@ -18,7 +18,7 @@ object MovieStat extends App {
         .reduceByKey((x,y) => (x._1+y._1,x._2+y._2))
         .mapValues(x => x._1 / x._2 )
         .sortBy(_._2,false)
-        .map(x => Movie(x._1,x._2))
+        .map(Movie.tupled)
   }
 
   movieRateAvg(sc.textFile("input//movies.dat"),sc.textFile("input//ratings.dat")).take(25).foreach(println(_))
