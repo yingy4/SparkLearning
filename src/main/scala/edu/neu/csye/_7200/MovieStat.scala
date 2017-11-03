@@ -8,18 +8,32 @@ object MovieStat extends App {
 
   case class Movie(name: String,avgRating: Double)
 
+  object Movie extends ((String,Double) => Movie) {
+
+    object OrderingMovieAvgRating extends Ordering[Movie] {
+      def compare(x: Movie, y: Movie): Int = x.avgRating.compare(y.avgRating)
+    }
+
+    object OrderingMovieName extends Ordering[Movie] {
+      def compare(x: Movie, y: Movie): Int = x.name.compare(y.name)
+    }
+
+  }
+
   def movieRateAvg(movies: RDD[String], ratings: RDD[String]) = {
     //Sort by ratings in descending order and title in ascending order
-    implicit val myOrdering:Ordering[(Double,String)] = Ordering.Tuple2(Ordering.Double.reverse, Ordering.String)
+    val comparerAvgRating:Comparer[Movie] = Movie.OrderingMovieAvgRating
+    val comparerName:Comparer[Movie] = Movie.OrderingMovieName
+    implicit val movieOrdering:Ordering[Movie] = (comparerAvgRating.invert orElse comparerName).toOrdering
     val l = movies.map(x => (x.split("::").head, x.split("::")(1)))
     val r = ratings.map(x => (x.split("::")(1), x.split("::")(2).toDouble))
-      l.join(r)
+    l.join(r)
         .map(_._2)
         .mapValues((_,1))
         .reduceByKey((x,y) => (x._1+y._1,x._2+y._2))
         .mapValues(x => x._1 / x._2 )
-        .sortBy(x => (x._2,x._1))
         .map(Movie.tupled)
+        .sortBy(x => x)
   }
 
   //For Spark 1.0-1.9
