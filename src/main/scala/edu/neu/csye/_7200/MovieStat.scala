@@ -36,6 +36,14 @@ object MovieStat extends App {
         .sortBy(x => x)
   }
 
+  //This method filter the ratings rdd which has the movieId that appears in movies rdd
+  def filterRatings(movies: RDD[String], ratings: RDD[String]) = {
+    val l = movies.map(x => (x.split("::").head, 0))
+    val r = ratings.map(x => (x.split("::")(1), x))
+    l.join(r)
+        .map(_._2._2)
+  }
+
   //For Spark 1.0-1.9
   val sc = new SparkContext(new SparkConf().setAppName("MovieStat").setMaster("local[*]"))
 
@@ -51,6 +59,8 @@ object MovieStat extends App {
     .getOrCreate()
 
   movieRateAvg(ss.read.textFile("input//movies.dat").rdd,ss.read.textFile("input//ratings.dat").rdd).take(25).foreach(println(_))
+
+  //filterRatings(ss.read.textFile("input//movies_test.dat").rdd,ss.read.textFile("input//ratings.dat").rdd).coalesce(1).saveAsTextFile("input//ratings_test")
 
   ss.stop()
 

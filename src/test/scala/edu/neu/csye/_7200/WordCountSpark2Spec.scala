@@ -5,10 +5,10 @@ import org.scalatest.{BeforeAndAfter, FlatSpec, Matchers}
 
 class WordCountSpark2Spec extends FlatSpec with Matchers with BeforeAndAfter  {
 
-  private var ss: SparkSession = _
+  private var spark: SparkSession = _
 
   before {
-    ss = SparkSession
+    spark = SparkSession
       .builder()
       .appName("WordCount")
       .master("local[*]")
@@ -16,13 +16,13 @@ class WordCountSpark2Spec extends FlatSpec with Matchers with BeforeAndAfter  {
   }
 
   after {
-    if (ss != null) {
-      ss.stop()
+    if (spark != null) {
+      spark.stop()
     }
   }
 
   "result" should "right for wordCount" in {
-    WordCount.wordCount(ss.read.textFile("input//WordCount.txt").rdd," ").collect() should matchPattern {
+    WordCount.wordCount(spark.read.textFile("input//WordCount.txt").rdd," ").collect() should matchPattern {
       case Array(("Hello",3),("World",3),("Hi",1)) =>
     }
   }
