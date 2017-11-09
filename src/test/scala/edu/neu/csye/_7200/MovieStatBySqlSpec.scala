@@ -10,7 +10,7 @@ class MovieStatBySqlSpec extends FlatSpec with Matchers with BeforeAndAfter {
   before {
     spark = SparkSession
       .builder()
-      .appName("MovieStat")
+      .appName("MovieStatBySql")
       .master("local[*]")
       .getOrCreate()
   }

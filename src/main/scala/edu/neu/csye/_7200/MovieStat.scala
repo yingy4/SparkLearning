@@ -52,16 +52,16 @@ object MovieStat extends App {
   sc.stop()
 
   //For Spark 2.0+
-  val ss = SparkSession
+  val spark = SparkSession
     .builder()
     .appName("MovieStat")
     .master("local[*]")
     .getOrCreate()
 
-  movieRateAvg(ss.read.textFile("input//movies.dat").rdd,ss.read.textFile("input//ratings.dat").rdd).take(25).foreach(println(_))
+  movieRateAvg(spark.read.textFile("input//movies.dat").rdd,spark.read.textFile("input//ratings.dat").rdd).take(25).foreach(println(_))
 
-  //filterRatings(ss.read.textFile("input//movies_test.dat").rdd,ss.read.textFile("input//ratings.dat").rdd).coalesce(1).saveAsTextFile("input//ratings_test")
+  //filterRatings(spark.read.textFile("input//movies_test.dat").rdd,spark.read.textFile("input//ratings.dat").rdd).coalesce(1).saveAsTextFile("input//ratings_test")
 
-  ss.stop()
+  spark.stop()
 
 }

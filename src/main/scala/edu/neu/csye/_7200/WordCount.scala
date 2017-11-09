@@ -20,13 +20,13 @@ object WordCount extends App {
   sc.stop()
 
   //For Spark 2.0+
-  val ss = SparkSession
+  val spark = SparkSession
     .builder()
     .appName("WordCount")
     .master("local[*]")
     .getOrCreate()
 
-  wordCount(ss.read.textFile("input//WordCount.txt").rdd," ").collect().foreach(println(_))
+  wordCount(spark.read.textFile("input//WordCount.txt").rdd," ").collect().foreach(println(_))
 
-  ss.stop()
+  spark.stop()
 }

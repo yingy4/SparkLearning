@@ -11,7 +11,7 @@ class MovieStatSpark2Spec extends FlatSpec with Matchers with BeforeAndAfter {
   before {
     spark = SparkSession
       .builder()
-      .appName("MovieStat")
+      .appName("MovieStatSpark2")
       .master("local[*]")
       .getOrCreate()
   }
