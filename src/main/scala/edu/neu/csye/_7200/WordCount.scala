@@ -44,7 +44,7 @@ object WordCount extends App {
   wordDS.createTempView("words")
   wordDS.cache()
 
-  spark.sql("select word, count(*) from words group by word").show(10)
+  spark.sql("select word, count(*) as count from words group by word order by count desc").show(10)
 
   spark.stop()
 }
