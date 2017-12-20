@@ -12,7 +12,7 @@ import org.apache.spark.sql.SparkSession
   * 5. Application location: find your jar in your AWS S3
   * 6. Arguments: <input1> <input2> <output>
   *    This example take 3 arguments, input path for movies data, input path for ratings data and output path
-  *    Example: s3n://yourbucketname/input/movies_test.dat s3n://yourbucketname/input/ratings_test.dat s3n://yourbucketname/outputfolder
+  *    Example: s3://yourbucketname/input/movies_test.dat s3://yourbucketname/input/ratings_test.dat s3://yourbucketname/outputfolder
   *    You may find test file under input folder in this repo
   */
 object MovieStatAWS {
